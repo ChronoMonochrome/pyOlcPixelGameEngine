@@ -204,7 +204,24 @@ PYBIND11_MODULE(olc, m)
 		.def("Start", &olc::PixelGameEngine::Start, py::call_guard<py::gil_scoped_release>())
 		.def("OnUserCreate", &olc::PixelGameEngine::OnUserCreate)
 		.def("OnUserUpdate", &olc::PixelGameEngine::OnUserUpdate)
-		.def("OnUserDestroy", &olc::PixelGameEngine::OnUserDestroy);
+		.def("OnUserDestroy", &olc::PixelGameEngine::OnUserDestroy)
+		.def("IsFocused", &olc::PixelGameEngine::IsFocused)
+		.def("GetKey", &olc::PixelGameEngine::GetKey)
+		.def("GetMouse", &olc::PixelGameEngine::GetMouse, py::arg("b") = 0)
+		.def("GetMouseX", &olc::PixelGameEngine::GetMouseX)
+		.def("GetMouseY", &olc::PixelGameEngine::GetMouseY)
+		.def("ScreenWidth", &olc::PixelGameEngine::ScreenWidth)
+		.def("ScreenHeight", &olc::PixelGameEngine::ScreenHeight)
+		.def("GetDrawTargetWidth", &olc::PixelGameEngine::GetDrawTargetWidth)
+		.def("GetDrawTargetHeight", &olc::PixelGameEngine::GetDrawTargetHeight)
+		.def("GetDrawTarget", &olc::PixelGameEngine::GetDrawTarget, py::return_value_policy::reference)
+		.def("SetDrawTarget", &olc::PixelGameEngine::SetDrawTarget, py::arg("target") = nullptr)
+		.def("SetPixelMode", &olc::PixelGameEngine::SetPixelMode)
+		.def("SetPixelBlend", &olc::PixelGameEngine::SetPixelBlend, py::arg("fBlend") = 0.f)
+		.def("SetSubPixelOffset", &olc::PixelGameEngine::SetSubPixelOffset,
+			py::arg("ox") = 0.f,
+			py::arg("oy") = 0.f)
+		;
 
 	pge.def("Draw", &olc::PixelGameEngine::Draw)
 		.def("DrawLine", &olc::PixelGameEngine::DrawLine,
