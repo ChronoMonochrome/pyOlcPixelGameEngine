@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+src/pyOlcBindings/.vs/*
+*.log
+*.png
+src/pyOlcBindings/Debug/
+src/pyOlcBindings/Release/
+src/pyOlcBindings/pyOlcBindings/Debug/
+src/pyOlcBindings/pyOlcBindings/Release/
