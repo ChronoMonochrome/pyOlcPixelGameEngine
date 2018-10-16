@@ -1,6 +1,8 @@
 
 from painter import Paint
+from noise import Noise
+from sprites import Sprites
 
 
 if __name__ == "__main__":
-    Paint.run()
+    Noise.run()
