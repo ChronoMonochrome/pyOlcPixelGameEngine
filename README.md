@@ -5,7 +5,8 @@ Python bindings for fantastic [olcPixelGameEngine](https://github.com/OneLoneCod
 Everything is trivial
 - Install 32-bit python interpreter
 - Install [pybind11](https://github.com/pybind/pybind11) by executing `pip install pybind11`
-- Link and Build
+- Link with python libraries
+- Build
 
 I used visual studio 2017 community with python workload.
 
