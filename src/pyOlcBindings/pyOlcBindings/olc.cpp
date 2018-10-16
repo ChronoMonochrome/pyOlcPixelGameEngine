@@ -96,10 +96,14 @@ PYBIND11_MODULE(olc, m)
 
 	//////////////////////////// HWButton ///////////////////////////////////////////
 	py::class_<olc::HWButton>(m, "HWButton")
-		.def(py::init<>())
 		.def_readwrite("bHeld", &olc::HWButton::bHeld)
 		.def_readwrite("bPressed", &olc::HWButton::bPressed)
-		.def_readwrite("bReleased", &olc::HWButton::bReleased);
+		.def_readwrite("bReleased", &olc::HWButton::bReleased)
+		.def("__repr__", [](const olc::HWButton &b)
+	{
+		std::string result = "Held: " + std::to_string(b.bHeld) + " Pressed: " + std::to_string(b.bPressed) + " Released: " + std::to_string(b.bReleased);
+		return result;
+	});
 	//////////////////////////// HWButton ///////////////////////////////////////////
 
 	//////////////////////////// Sprite ///////////////////////////////////////////

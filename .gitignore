@@ -33,7 +33,6 @@
 
 src/pyOlcBindings/.vs/*
 *.log
-*.png
 src/pyOlcBindings/Debug/
 src/pyOlcBindings/Release/
 src/pyOlcBindings/pyOlcBindings/Debug/

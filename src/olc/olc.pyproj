@@ -32,6 +32,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="definitions.py" />
+    <Compile Include="sprites.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\pyOlcBindings\pyOlcBindings\pyOlcBindings.vcxproj">

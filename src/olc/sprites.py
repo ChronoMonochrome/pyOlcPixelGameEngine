@@ -5,24 +5,26 @@ from os import path
 from definitions import *
 
 
-class Noise(olc.PixelGameEngine):
+class Sprites(olc.PixelGameEngine):
     def __init__(self):
         olc.PixelGameEngine.__init__(self)
         self.sAppName = "|| {} ||".format(path.basename(__file__))
-        self._w = 0
-        self._h = 0
+        self._s = None
 
     def OnUserCreate(self):
-        self._w = self.ScreenWidth()
-        self._h = self.ScreenHeight()
+        self._s = olc.Sprite("resources/s1.png")
         return True
 
     def OnUserUpdate(self, fElapsedTime):
-        [self.Draw(x, y, olc.Pixel(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))) for x in range(self._w) for y in range(self._h)]
+        self.DrawSprite(0, 0, self._s)
         return True
 
     @staticmethod
     def run():
-        n = Noise()
-        if n.Construct(64, 64, 8, 8):
+        n = Sprites()
+        if n.Construct(128, 128, 8, 8):
             started = n.Start()
+
+
+if __name__ == "__main__":
+    Sprites.run()
