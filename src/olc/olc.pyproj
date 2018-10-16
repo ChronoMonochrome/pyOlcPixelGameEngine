@@ -32,6 +32,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="definitions.py" />
+    <Compile Include="painter.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="sprites.py">
       <SubType>Code</SubType>
     </Compile>
