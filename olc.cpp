@@ -39,10 +39,10 @@ public:
 		);
 	}
 
-	void Draw(int32_t x, int32_t y, olc::Pixel p /* = olc::WHITE */) override
+	bool Draw(int32_t x, int32_t y, olc::Pixel p /* = olc::WHITE */) override
 	{
 		PYBIND11_OVERLOAD(
-			void,
+			bool,
 			olc::PixelGameEngine,
 			Draw,
 			x,
@@ -112,86 +112,44 @@ PYBIND11_MODULE(olc, m)
 		.def(py::init<std::string>())
 		.def(py::init<int32_t, int32_t >());
 
+	py::enum_<olc::Sprite::Mode>(sprite, "Mode")
+		.value("NORMAL", olc::Sprite::NORMAL)
+		.value("PERIODIC", olc::Sprite::PERIODIC)
+		.export_values();
+
 	sprite.def("LoadFromFile", &olc::Sprite::LoadFromFile)
-		.def("LoadFromSprFile", &olc::Sprite::LoadFromSprFile)
+		.def("LoadFromSprFile", &olc::Sprite::LoadFromPGESprFile)
 		.def_readwrite("width", &olc::Sprite::width)
 		.def_readwrite("height", &olc::Sprite::height)
 		.def("GetPixel", &olc::Sprite::GetPixel)
 		.def("SetPixel", &olc::Sprite::SetPixel)
 		.def("Sample", &olc::Sprite::Sample)
-		.def("GetData", &olc::Sprite::GetData, py::return_value_policy::reference);
+		.def("SampleBL", &olc::Sprite::SampleBL)
+		.def("GetData", &olc::Sprite::GetData, py::return_value_policy::reference)
+		.def("SetSampleMode", &olc::Sprite::SetSampleMode)
+		;
+
 	//////////////////////////// Sprite ///////////////////////////////////////////
 
 	//////////////////////////// Key ///////////////////////////////////////////
 	py::enum_<olc::Key>(m, "Key")
-		.value("A", olc::Key::A)
-		.value("B", olc::Key::B)
-		.value("C", olc::Key::C)
-		.value("D", olc::Key::D)
-		.value("E", olc::Key::E)
-		.value("F", olc::Key::F)
-		.value("G", olc::Key::G)
-		.value("H", olc::Key::H)
-		.value("I", olc::Key::I)
-		.value("J", olc::Key::J)
-		.value("K", olc::Key::K)
-		.value("L", olc::Key::L)
-		.value("M", olc::Key::M)
-		.value("N", olc::Key::N)
-		.value("O", olc::Key::O)
-		.value("P", olc::Key::P)
-		.value("Q", olc::Key::Q)
-		.value("R", olc::Key::R)
-		.value("S", olc::Key::S)
-		.value("T", olc::Key::T)
-		.value("U", olc::Key::U)
-		.value("V", olc::Key::V)
-		.value("W", olc::Key::W)
-		.value("X", olc::Key::X)
-		.value("Y", olc::Key::Y)
-		.value("Z", olc::Key::Z)
-		.value("K0", olc::Key::K0)
-		.value("K1", olc::Key::K1)
-		.value("K2", olc::Key::K2)
-		.value("K3", olc::Key::K3)
-		.value("K4", olc::Key::K4)
-		.value("K5", olc::Key::K5)
-		.value("K6", olc::Key::K6)
-		.value("K7", olc::Key::K7)
-		.value("K8", olc::Key::K8)
-		.value("K9", olc::Key::K9)
-		.value("F1", olc::Key::F1)
-		.value("F2", olc::Key::F2)
-		.value("F3", olc::Key::F3)
-		.value("F4", olc::Key::F4)
-		.value("F5", olc::Key::F5)
-		.value("F6", olc::Key::F6)
-		.value("F7", olc::Key::F7)
-		.value("F8", olc::Key::F8)
-		.value("F9", olc::Key::F9)
-		.value("F10", olc::Key::F10)
-		.value("F11", olc::Key::F11)
-		.value("F12", olc::Key::F12)
-		.value("UP", olc::Key::UP)
-		.value("DOWN", olc::Key::DOWN)
-		.value("LEFT", olc::Key::LEFT)
-		.value("RIGHT", olc::Key::RIGHT)
-		.value("SPACE", olc::Key::SPACE)
-		.value("TAB", olc::Key::TAB)
-		.value("SHIFT", olc::Key::SHIFT)
-		.value("CTRL", olc::Key::CTRL)
-		.value("INS", olc::Key::INS)
-		.value("DEL", olc::Key::DEL)
-		.value("HOME", olc::Key::HOME)
-		.value("END", olc::Key::END)
-		.value("PGUP", olc::Key::PGUP)
-		.value("PGDN", olc::Key::PGDN)
-		.value("BACK", olc::Key::BACK)
-		.value("ESCAPE", olc::Key::ESCAPE)
-		.value("ENTER", olc::Key::ENTER)
-		.value("PAUSE", olc::Key::PAUSE)
-		.value("SCROLL", olc::Key::SCROLL)
-		.export_values();
+		.value("A", olc::Key::A).value("B", olc::Key::B).value("C", olc::Key::C).value("D", olc::Key::D)
+		.value("E", olc::Key::E).value("F", olc::Key::F).value("G", olc::Key::G).value("H", olc::Key::H)
+		.value("I", olc::Key::I).value("J", olc::Key::J).value("K", olc::Key::K).value("L", olc::Key::L)
+		.value("M", olc::Key::M).value("N", olc::Key::N).value("O", olc::Key::O).value("P", olc::Key::P)
+		.value("Q", olc::Key::Q).value("R", olc::Key::R).value("S", olc::Key::S).value("T", olc::Key::T)
+		.value("U", olc::Key::U).value("V", olc::Key::V).value("W", olc::Key::W).value("X", olc::Key::X)
+		.value("Y", olc::Key::Y).value("Z", olc::Key::Z).value("K0", olc::Key::K0).value("K1", olc::Key::K1)
+		.value("K2", olc::Key::K2).value("K3", olc::Key::K3).value("K4", olc::Key::K4).value("K5", olc::Key::K5)
+		.value("K6", olc::Key::K6).value("K7", olc::Key::K7).value("K8", olc::Key::K8).value("K9", olc::Key::K9)
+		.value("F1", olc::Key::F1).value("F2", olc::Key::F2).value("F3", olc::Key::F3).value("F4", olc::Key::F4)
+		.value("F5", olc::Key::F5).value("F6", olc::Key::F6).value("F7", olc::Key::F7).value("F8", olc::Key::F8)
+		.value("F9", olc::Key::F9).value("F10", olc::Key::F10).value("F11", olc::Key::F11).value("F12", olc::Key::F12)
+		.value("UP", olc::Key::UP).value("DOWN", olc::Key::DOWN).value("LEFT", olc::Key::LEFT).value("RIGHT", olc::Key::RIGHT)
+		.value("SPACE", olc::Key::SPACE).value("TAB", olc::Key::TAB).value("SHIFT", olc::Key::SHIFT).value("CTRL", olc::Key::CTRL)
+		.value("INS", olc::Key::INS).value("DEL", olc::Key::DEL).value("HOME", olc::Key::HOME).value("END", olc::Key::END)
+		.value("PGUP", olc::Key::PGUP).value("PGDN", olc::Key::PGDN).value("BACK", olc::Key::BACK).value("ESCAPE", olc::Key::ESCAPE)
+		.value("ENTER", olc::Key::ENTER).value("PAUSE", olc::Key::PAUSE).value("SCROLL", olc::Key::SCROLL).export_values();
 	//////////////////////////// Key ///////////////////////////////////////////
 
 	//////////////////////////// PixelGameEngine ///////////////////////////////////////////
@@ -204,7 +162,7 @@ PYBIND11_MODULE(olc, m)
 			py::arg("screen_h") = 256,
 			py::arg("pixel_w") = 1,
 			py::arg("pixel_h") = 1,
-			py::arg("framerate") = -1)
+			py::arg("full_screen") = false)
 		.def("Start", &olc::PixelGameEngine::Start, py::call_guard<py::gil_scoped_release>())
 		.def("OnUserCreate", &olc::PixelGameEngine::OnUserCreate)
 		.def("OnUserUpdate", &olc::PixelGameEngine::OnUserUpdate)
