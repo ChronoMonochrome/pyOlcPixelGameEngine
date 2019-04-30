@@ -1,4 +1,5 @@
 #include "pybind11/pybind11.h"
+#include "pybind11/functional.h"
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
@@ -126,8 +127,7 @@ PYBIND11_MODULE(olc, m)
 		.def("Sample", &olc::Sprite::Sample)
 		.def("SampleBL", &olc::Sprite::SampleBL)
 		.def("GetData", &olc::Sprite::GetData, py::return_value_policy::reference)
-		.def("SetSampleMode", &olc::Sprite::SetSampleMode)
-		;
+		.def("SetSampleMode", &olc::Sprite::SetSampleMode);
 
 	//////////////////////////// Sprite ///////////////////////////////////////////
 
@@ -152,7 +152,7 @@ PYBIND11_MODULE(olc, m)
 		.value("ENTER", olc::Key::ENTER).value("PAUSE", olc::Key::PAUSE).value("SCROLL", olc::Key::SCROLL).export_values();
 	//////////////////////////// Key ///////////////////////////////////////////
 
-	//////////////////////////// PixelGameEngine ///////////////////////////////////////////
+	//////////////////////////// PixelGameEngine ///////////////////////////////
 
 	py::class_<olc::PixelGameEngine, PyPixelGameEngine> pge(m, "PixelGameEngine");
 	pge.def(py::init<>())
@@ -172,86 +172,32 @@ PYBIND11_MODULE(olc, m)
 		.def("GetMouse", &olc::PixelGameEngine::GetMouse, py::arg("b") = 0)
 		.def("GetMouseX", &olc::PixelGameEngine::GetMouseX)
 		.def("GetMouseY", &olc::PixelGameEngine::GetMouseY)
+		.def("GetMouseWheel", &olc::PixelGameEngine::GetMouseWheel)
 		.def("ScreenWidth", &olc::PixelGameEngine::ScreenWidth)
 		.def("ScreenHeight", &olc::PixelGameEngine::ScreenHeight)
 		.def("GetDrawTargetWidth", &olc::PixelGameEngine::GetDrawTargetWidth)
 		.def("GetDrawTargetHeight", &olc::PixelGameEngine::GetDrawTargetHeight)
 		.def("GetDrawTarget", &olc::PixelGameEngine::GetDrawTarget, py::return_value_policy::reference)
 		.def("SetDrawTarget", &olc::PixelGameEngine::SetDrawTarget, py::arg("target") = nullptr)
-		.def("SetPixelMode", &olc::PixelGameEngine::SetPixelMode)
+		.def("SetPixelMode", (void (olc::PixelGameEngine::*)(olc::Pixel::Mode))& olc::PixelGameEngine::SetPixelMode)
+		.def("GetPixelMode", &olc::PixelGameEngine::GetPixelMode)
+		.def("SetPixelMode", (void (olc::PixelGameEngine::*)(std::function<olc::Pixel(const int x, const int y, const olc::Pixel& pSource, const olc::Pixel& pDest)>))& olc::PixelGameEngine::SetPixelMode)
 		.def("SetPixelBlend", &olc::PixelGameEngine::SetPixelBlend, py::arg("fBlend") = 0.f)
-		.def("SetSubPixelOffset", &olc::PixelGameEngine::SetSubPixelOffset,
-			py::arg("ox") = 0.f,
-			py::arg("oy") = 0.f)
-		;
+		.def("SetSubPixelOffset", &olc::PixelGameEngine::SetSubPixelOffset, py::arg("ox") = 0.f, py::arg("oy") = 0.f);
 
 	pge.def("Draw", &olc::PixelGameEngine::Draw)
-		.def("DrawLine", &olc::PixelGameEngine::DrawLine,
-			py::arg("x1") = 0,
-			py::arg("y1") = 0,
-			py::arg("x2") = 0,
-			py::arg("y2") = 0,
-			py::arg("p") = olc::WHITE)
-		.def("DrawCircle", &olc::PixelGameEngine::DrawCircle,
-			py::arg("x") = 0,
-			py::arg("y") = 0,
-			py::arg("radius") = 0,
-			py::arg("p") = olc::WHITE)
-		.def("FillCircle", &olc::PixelGameEngine::FillCircle,
-			py::arg("x") = 0,
-			py::arg("y") = 0,
-			py::arg("radius") = 0,
-			py::arg("p") = olc::WHITE)
-		.def("DrawRect", &olc::PixelGameEngine::DrawRect,
-			py::arg("x") = 0,
-			py::arg("y") = 0,
-			py::arg("w") = 0,
-			py::arg("h") = 0,
-			py::arg("p") = olc::WHITE)
-		.def("FillRect", &olc::PixelGameEngine::FillRect,
-			py::arg("x") = 0,
-			py::arg("y") = 0,
-			py::arg("w") = 0,
-			py::arg("h") = 0,
-			py::arg("p") = olc::WHITE)
-		.def("DrawTriangle", &olc::PixelGameEngine::DrawTriangle,
-			py::arg("x1") = 0,
-			py::arg("y1") = 0,
-			py::arg("x2") = 0,
-			py::arg("y2") = 0,
-			py::arg("x3") = 0,
-			py::arg("y3") = 0,
-			py::arg("p") = olc::WHITE)
-		.def("FillTriangle", &olc::PixelGameEngine::FillTriangle,
-			py::arg("x1") = 0,
-			py::arg("y1") = 0,
-			py::arg("x2") = 0,
-			py::arg("y2") = 0,
-			py::arg("x3") = 0,
-			py::arg("y3") = 0,
-			py::arg("p") = olc::WHITE)
-		.def("DrawSprite", &olc::PixelGameEngine::DrawSprite,
-			py::arg("x") = 0,
-			py::arg("y") = 0,
-			py::arg("Sprite") = nullptr,
-			py::arg("scale") = 1)
-		.def("DrawPartialSprite", &olc::PixelGameEngine::DrawPartialSprite,
-			py::arg("x") = 0,
-			py::arg("y") = 0,
-			py::arg("Sprite") = nullptr,
-			py::arg("ox") = 1,
-			py::arg("oy") = 1,
-			py::arg("w") = 1, 
-			py::arg("h") = 1,
-			py::arg("scale") = 1)
-		.def("DrawString", &olc::PixelGameEngine::DrawString,
-			py::arg("x") = 0,
-			py::arg("y") = 0,
-			py::arg("sText") = "Text",
-			py::arg("col") = olc::WHITE,
-			py::arg("scale") = 1)
+		.def("DrawLine", &olc::PixelGameEngine::DrawLine, py::arg("x1") = 0, py::arg("y1") = 0, py::arg("x2") = 0, py::arg("y2") = 0, py::arg("p") = olc::WHITE, py::arg("pattern") = 0xFFFFFFFF)
+		.def("DrawCircle", &olc::PixelGameEngine::DrawCircle, py::arg("x") = 0, py::arg("y") = 0, py::arg("radius") = 0, py::arg("p") = olc::WHITE, py::arg("mask") = 0xFF)
+		.def("FillCircle", &olc::PixelGameEngine::FillCircle, py::arg("x") = 0, py::arg("y") = 0, py::arg("radius") = 0, py::arg("p") = olc::WHITE)
+		.def("DrawRect", &olc::PixelGameEngine::DrawRect, py::arg("x") = 0, py::arg("y") = 0, py::arg("w") = 0, py::arg("h") = 0, py::arg("p") = olc::WHITE)
+		.def("FillRect", &olc::PixelGameEngine::FillRect, py::arg("x") = 0, py::arg("y") = 0, py::arg("w") = 0, py::arg("h") = 0, py::arg("p") = olc::WHITE)
+		.def("DrawTriangle", &olc::PixelGameEngine::DrawTriangle, py::arg("x1") = 0, py::arg("y1") = 0, py::arg("x2") = 0, py::arg("y2") = 0, py::arg("x3") = 0, py::arg("y3") = 0, py::arg("p") = olc::WHITE)
+		.def("FillTriangle", &olc::PixelGameEngine::FillTriangle, py::arg("x1") = 0, py::arg("y1") = 0, py::arg("x2") = 0, py::arg("y2") = 0, py::arg("x3") = 0, py::arg("y3") = 0, py::arg("p") = olc::WHITE)
+		.def("DrawSprite", &olc::PixelGameEngine::DrawSprite, py::arg("x") = 0, py::arg("y") = 0, py::arg("Sprite") = nullptr, py::arg("scale") = 1)
+		.def("DrawPartialSprite", &olc::PixelGameEngine::DrawPartialSprite, py::arg("x") = 0, py::arg("y") = 0, py::arg("Sprite") = nullptr, py::arg("ox") = 1, py::arg("oy") = 1, py::arg("w") = 1,  py::arg("h") = 1, py::arg("scale") = 1)
+		.def("DrawString", &olc::PixelGameEngine::DrawString, py::arg("x") = 0, py::arg("y") = 0, py::arg("sText") = "Text", py::arg("col") = olc::WHITE, py::arg("scale") = 1)
 		.def("Clear", &olc::PixelGameEngine::Clear, py::arg("p") = olc::BLACK);
 
-	//////////////////////////// PixelGameEngine ///////////////////////////////////////////
+	//////////////////////////// PixelGameEngine ///////////////////////////////
 
 }
