@@ -39,3 +39,5 @@ src/pyOlcBindings/pyOlcBindings/Debug/
 src/pyOlcBindings/pyOlcBindings/Release/
 src/olc/__pycache__/
 build/
+examples/__pycache__/
+*.pyd

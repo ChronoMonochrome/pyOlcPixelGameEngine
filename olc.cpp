@@ -72,6 +72,33 @@ PYBIND11_MODULE(olc, m)
 		.def_readwrite("b", &olc::Pixel::b)
 		.def_readwrite("a", &olc::Pixel::a);
 
+	// Constants
+	pixel.def_readonly_static("WHITE", &olc::WHITE)
+		 .def_readonly_static("GREY", &olc::GREY)
+		 .def_readonly_static("DARK_GREY", &olc::DARK_GREY)
+		 .def_readonly_static("VERY_DARK_GREY", &olc::VERY_DARK_GREY)
+		 .def_readonly_static("RED", &olc::RED)
+		 .def_readonly_static("DARK_RED", &olc::DARK_RED)
+		 .def_readonly_static("VERY_DARK_RED", &olc::VERY_DARK_RED)
+		 .def_readonly_static("YELLOW", &olc::YELLOW)
+		 .def_readonly_static("DARK_YELLOW", &olc::DARK_YELLOW)
+		 .def_readonly_static("VERY_DARK_YELLOW", &olc::VERY_DARK_YELLOW)
+		 .def_readonly_static("GREEN", &olc::GREEN)
+		 .def_readonly_static("DARK_GREEN", &olc::DARK_GREEN)
+		 .def_readonly_static("VERY_DARK_GREEN", &olc::VERY_DARK_GREEN)
+		 .def_readonly_static("CYAN", &olc::CYAN)
+		 .def_readonly_static("DARK_CYAN", &olc::DARK_CYAN)
+		 .def_readonly_static("VERY_DARK_CYAN", &olc::VERY_DARK_CYAN)
+		 .def_readonly_static("BLUE", &olc::BLUE)
+		 .def_readonly_static("DARK_BLUE", &olc::DARK_BLUE)
+		 .def_readonly_static("VERY_DARK_BLUE", &olc::VERY_DARK_BLUE)
+		 .def_readonly_static("MAGENTA", &olc::MAGENTA)
+		 .def_readonly_static("DARK_MAGENTA", &olc::DARK_MAGENTA)
+		 .def_readonly_static("VERY_DARK_MAGENTA", &olc::VERY_DARK_MAGENTA)
+		 .def_readonly_static("BLACK", &olc::BLACK)
+		 .def_readonly_static("BLANK", &olc::BLANK);
+
+
 	py::enum_<olc::Pixel::Mode>(pixel, "Mode")
 		.value("ALPHA", olc::Pixel::Mode::ALPHA)
 		.value("MASK", olc::Pixel::Mode::MASK)
